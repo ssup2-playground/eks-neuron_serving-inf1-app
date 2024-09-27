@@ -18,7 +18,7 @@ model_resnet50 = torch.jit.load("./models/resnet50_neuron.pt")
 imagenet_index_name = eval(open("./indexes/imagenet_index_name.txt", "r").read())
 
 # Invoke handlers
-@app.post("/invoke")
+@app.post("/resnet50")
 def post_invoke(file: UploadFile) -> dict[str, str]:
     # Get PIL image from request
     image = Image.open(BytesIO(file.file.read())).convert("RGB")
