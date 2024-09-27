@@ -14,8 +14,8 @@ from fastapi import FastAPI, UploadFile
 
 # Init server
 app = FastAPI()
-model = torch.jit.load("./models/resnet50_neuron.pt")
-index_name = eval(open("./indexes/imagenet_index_name.txt", "r").read())
+model_resnet50 = torch.jit.load("./models/resnet50_neuron.pt")
+imagenet_index_name = eval(open("./indexes/imagenet_index_name.txt", "r").read())
 
 # Invoke handlers
 @app.post("/invoke")
@@ -38,14 +38,14 @@ def post_invoke(file: UploadFile) -> dict[str, str]:
     input_image = torch.tensor(processed_image.numpy()[numpy.newaxis, ...])
 
     # Invoke model
-    result_model = model(input_image)
+    result_model = model_resnet50(input_image)
     result_probability = torch.nn.functional.softmax(result_model, dim=1)
     result_top5_index = reversed(result_model[0].sort()[1][-5:])
 
     # Return
     result = {}
     for index in result_top5_index:
-        result[index_name[index]] = str(result_probability[0][index].item())
+        result[imagenet_index_name[index]] = str(result_probability[0][index].item())
     return result
 
 # Health handlers
