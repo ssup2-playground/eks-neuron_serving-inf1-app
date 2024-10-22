@@ -21,7 +21,7 @@ jobs:
     - name: Prepare
       id: prepare
       run: |
-        DOCKER_IMAGE=ghcr.io/ssup2-playground/eks-neuron_inf1-serving-app
+        DOCKER_IMAGE=ghcr.io/ssup2-playground/eks-neuron_serving-inf1-app
         DOCKER_PLATFORMS=linux/amd64
         VERSION=""
         if [[ $GITHUB_REF == refs/tags/* ]]; then
